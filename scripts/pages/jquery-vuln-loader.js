@@ -29,14 +29,30 @@ const childParams = new URLSearchParams({
   candidates: JSON.stringify(observedCandidates)
 });
 
-frame.addEventListener('load', startAutoCandidateLoad);
+let checkPageReady = false;
+const readyTimer = setTimeout(() => {
+  document.getElementById('loaderMessage').textContent = '验证页面加载时间较长。如仍未显示，请重新打开验证页。';
+  document.getElementById('retryLoad').hidden = false;
+}, 10000);
+document.getElementById('retryLoad').addEventListener('click', () => location.reload());
 window.addEventListener('message', (event) => {
+  // The sandbox has an opaque origin: validate its WindowProxy instead of its origin.
+  if (event.source !== frame.contentWindow) return;
   const data = event.data || {};
-  if (data.type !== 'AEGISSCOPE_LOAD_JQUERY') return;
+  if (data.type === 'AEGISSCOPE_JQUERY_CHECK_READY') {
+    if (checkPageReady) return;
+    checkPageReady = true;
+    clearTimeout(readyTimer);
+    document.getElementById('loaderStatus').hidden = true;
+    startAutoCandidateLoad();
+    return;
+  }
+  if (!checkPageReady || data.type !== 'AEGISSCOPE_LOAD_JQUERY') return;
   loadManualJquery(data.src || '');
 });
+// Navigate only once; an HTML src followed by a script navigation can leave the
+// sandbox frame unpainted on a cold tab. Fetch only after its UI is initialized.
 frame.src = chrome.runtime.getURL(`pages/jquery-vuln-check.html?${childParams.toString()}`);
-setTimeout(startAutoCandidateLoad, 500);
 
 async function startAutoCandidateLoad() {
   if (autoLoadStarted) return;

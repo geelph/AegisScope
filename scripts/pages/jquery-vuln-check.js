@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
     button.addEventListener('click', () => test(button.dataset.poc, button.dataset.mode === 'jquery'));
   });
   setText('loadStatus', candidates.length ? '等待加载器筛选可用 jQuery 链接...' : '未传入可加载的目标 jQuery 链接。');
+  if (window.parent !== window) {
+    window.parent.postMessage({ type: 'AEGISSCOPE_JQUERY_CHECK_READY' }, '*');
+  }
 });
 
 function useManualJquerySrc() {
@@ -37,6 +40,7 @@ function useManualJquerySrc() {
 }
 
 window.addEventListener('message', (event) => {
+  if (event.source !== window.parent) return;
   const data = event.data || {};
   if (data.type === 'LOAD_JQUERY_STATUS') {
     setText('loadStatus', data.error || '正在筛选候选链接...');

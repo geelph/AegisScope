@@ -7,11 +7,18 @@
   <style>
     html, body { width: 100%; height: 100%; margin: 0; background: linear-gradient(rgba(88, 196, 210, .07) 1px, transparent 1px), linear-gradient(90deg, rgba(88, 196, 210, .07) 1px, transparent 1px), linear-gradient(135deg, #fbfeff 0%, #eef9fb 48%, #f3f7ff 100%); background-size: 32px 32px, 32px 32px, auto; color: #10283a; }
     iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .loader-status { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); box-sizing: border-box; width: calc(100% - 40px); max-width: 560px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 16px; background: #fff; box-shadow: 0 6px 24px #17243b0a; }
+    .loader-status[hidden] { display: none; }
   </style>
   <link rel="stylesheet" href="../styles/workbench-fresh.css">
 </head>
 <body class="aegis-page" data-page="jquery-vuln-loader">
-  <iframe id="checkFrame" src="../pages/jquery-vuln-check.html"></iframe>
+  <section id="loaderStatus" class="loader-status" role="status" aria-live="polite">
+    <h1>jQuery 低版本漏洞验证</h1>
+    <p id="loaderMessage">正在打开验证页面，请稍候…</p>
+    <button id="retryLoad" type="button" hidden>重新打开验证页</button>
+  </section>
+  <iframe id="checkFrame" title="jQuery 低版本漏洞验证"></iframe>
   <script src="../scripts/pages/jquery-vuln-loader.js"></script>
 </body>
 </html>

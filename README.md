@@ -1,7 +1,7 @@
 <div align="center">
   <img src="icons/icon128.png" alt="玄镜 AegisScope" width="88" height="88">
 
-  <h2>玄镜 AegisScope V2.3.1</h2>
+  <h2>玄镜 AegisScope V2.3.2</h2>
 
   <p>
     前端代码资产采集、网站嗅探、备案查询、指纹扫描、泄露扫描、漏洞审计、浏览器辅助与 Vue Router 分析工具。
@@ -170,6 +170,12 @@ UA 修改：用于快速切换当前页面 User-Agent。内置 66 个常用 UA�
 编码修改的设计参考 Chrome-Charset（Liming Jin，MIT），采用当前标签页响应头覆盖机制，并针对玄镜的后台状态与界面独立实现。许可证见 [Chrome-Charset LICENSE](docs/third-party/Chrome-Charset-LICENSE.txt)。
 
 ## 版本记录
+
+### V2.3.2
+
+- 修复点击“jQuery低版本漏洞验证”后首次打开白屏、需要刷新才能显示的问题：验证页只导航一次，避免内嵌沙箱页面重复加载。
+- 改为等待验证界面初始化完成后加载目标 jQuery，避免首次启动或慢加载时丢失状态与源码消息。
+- 增加加载提示及超时后的重新打开入口；目标库下载失败时仍保留验证界面和手动填写链接的功能。
 
 ### V2.3.1
 
@@ -345,7 +351,7 @@ UA 修改：用于快速切换当前页面 User-Agent。内置 66 个常用 UA�
 - 支持漏洞审计、API 批量测试、自动验证与人工复核建议。
 - 支持 Vue Router 运行时分析、路由跳转与守卫绕过验证。
 
-玄镜 AegisScope V2.3.1  
+玄镜 AegisScope V2.3.2  
 为授权前端安全测试、代码资产分析和漏洞审计而生。
 
 ## Star History
